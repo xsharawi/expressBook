@@ -2,16 +2,23 @@ import express from 'express';
 import data from '../data/Sample_data'
 import Book from '../types/book';
 import { validate } from '../middleware/validate';
-import { BinaryOperatorToken } from 'typescript';
+
 const router = express()
 
 
 router.get('/',(req: Book.Request,res)=>{
+
     let name = req.query.name ;
     let pubYear = req.query.pubyear ;
-    console.log(name,pubYear)
+    const page = Number(req.query.page || "1");
+    const pageSize = Number(req.query.pageSize || "10");
+    const mydata = data.map((item,index)=>{
+        return {...item, index}
+    })
+
     if( name === undefined && pubYear === undefined ){
-        res.json(data)
+        const filteredItems = mydata.slice( ( (page - 1) * pageSize) , (page * pageSize) ) 
+        res.json({page,pageSize,filteredItems})
         return;
     }else if(pubYear === undefined){
         let filtered = data.filter(ele=> ele.title.toLowerCase().includes(name.toLowerCase()))
@@ -32,6 +39,7 @@ router.get('/',(req: Book.Request,res)=>{
         res.status(400).send("data not found")
         return;
     }
+
 })
 
 router.get('/:id',(req,res)=>{
@@ -49,7 +57,7 @@ router.delete('/:id',(req,res)=>{
     let found = data.findIndex((ele)=> ele.id === id)
     if( found !== -1 ){
         data.splice(found,1)
-        res.send("book deleted")
+        res.status(202).send("book deleted")
     }else{
         res.status(404).send("book not found")
     }
@@ -64,7 +72,7 @@ router.post('/',validate,(req: Book.Request,res)=>{
         pubYear: req.body.pubYear,
     }
     data.push(newBook)
-    res.send("book added")
+    res.status(201).send("book added")
 })
 
 router.put('/:id',(req: Book.Request, res)=>{
@@ -78,7 +86,7 @@ router.put('/:id',(req: Book.Request, res)=>{
             pubYear: req.body.pubYear || data[found].pubYear,
         }
         data[found] = updated
-        res.send("book updated")
+        res.status(200).send("book updated")
     }else{
         res.status(404).send("book not found")
     }

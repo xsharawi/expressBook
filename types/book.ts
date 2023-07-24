@@ -11,6 +11,8 @@ namespace Book{
         query:{
             name: string,
             pubyear: string,
+            page: string,
+            pageSize: string,
         }
     }
 }
