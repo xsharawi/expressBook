@@ -26,7 +26,7 @@ server.get("/",  (req, res)=> {
 })
 
 server.get("/health", (req, res) => {
-	res.status(200);
+	res.sendStatus(200);
 })
 server.use('/book',bookRouter)
 
