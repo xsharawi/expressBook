@@ -1,0 +1,11 @@
+[Unit]
+Description=Run script hourly
+
+[Timer]
+OnActiveSec=1s
+OnUnitActiveSec=1h
+Persistent=true
+Unit=app.service
+
+[Install]
+WantedBy=timers.target

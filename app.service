@@ -1,0 +1,11 @@
+[Unit]
+
+Description=save logs of last 1 hour
+
+[Service]
+
+Type=simple
+ExecStart=/usr/bin/node /home/ubuntu/app/dist/index.js
+
+[Install]
+WantedBy=multi-user.target
