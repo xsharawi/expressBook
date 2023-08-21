@@ -4,7 +4,28 @@ const server = express();
 const PORT = 3000
 server.use(express.json())
 
+server.get("/",  (req, res)=> {
+	const result = {
+		host: hostname,
+		headers: req.headers
+	}
 
+	res.format({
+		"text/plain": () => {
+			res.json(result)
+		},
+		"application/json": () => {
+			res.json(result)
+		},
+		"text/html": ()=> {
+			res.json(result)
+		}
+	})
+})
+
+server.get("/health", (req, res) => {
+	res.status(200);
+})
 server.use('/book',bookRouter)
 
 server.all('*', (req,res)=>{
