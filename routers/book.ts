@@ -17,8 +17,7 @@ router.get('/',(req: Book.Request,res)=>{
     })
 
     if( name === undefined && pubYear === undefined ){
-        const filteredItems = mydata.slice( ( (page - 1) * pageSize) , (page * pageSize) ) 
-        res.json({page,pageSize,filteredItems})
+        res.json(mydata)
         return;
     }else if(pubYear === undefined){
         let filtered = data.filter(ele=> ele.title.toLowerCase().includes(name.toLowerCase()))
