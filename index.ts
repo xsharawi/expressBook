@@ -1,12 +1,14 @@
 import express, {Response,Request} from 'express';
 import bookRouter from './routers/book'
+import os from 'os'
 const server = express();
 const PORT = 3000
 server.use(express.json())
 
+
 server.get("/",  (req, res)=> {
 	const result = {
-		host: hostname,
+		host: os.hostname(),
 		headers: req.headers
 	}
 
